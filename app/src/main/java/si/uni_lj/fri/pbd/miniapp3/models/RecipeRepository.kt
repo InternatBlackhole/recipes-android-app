@@ -1,15 +1,10 @@
 package si.uni_lj.fri.pbd.miniapp3.models
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.flow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +20,10 @@ interface RecipeRepository {
 
     val allIngredients: Flow<IngredientsDTO?>
     fun getRecipesByIngredient(ingredient: String): Flow<RecipesDTO?>
+
+    //fun getFullRecipe(recipeDTO: RecipeDTO): Flow<>
+
+    val favoriteRecipes: Flow<RecipesDTO?>
 }
 
 private object RecipeRepositoryImpl : RecipeRepository {
@@ -35,62 +34,13 @@ private object RecipeRepositoryImpl : RecipeRepository {
     override fun getRecipesByIngredient(ingredient: String): Flow<RecipesDTO?> =
         apiFlowCall(mealApi.getRecipesByIngredient(ingredient)) {
             trySend(it)
-        }//.shareIn(mainScope, SharingStarted.WhileSubscribed(), 1)
-
-    /*callbackFlow {
-    mealApi.getMealsByIngredient(ingredient)?.enqueue(object : Callback<MealsDTO?> {
-        override fun onResponse(call: Call<MealsDTO?>, response: Response<MealsDTO?>) {
-            if (!response.isSuccessful) {
-                close(Error("Call failed with code: ${response.code()} ${response.message()}"))
-                return
-            }
-            response.body()?.meals?.forEach {
-                val res = trySend(it)
-                if (!res.isSuccess) {
-                    close(res.exceptionOrNull())
-                    return
-                }
-            }
-            close()
         }
 
-        override fun onFailure(call: Call<MealsDTO?>, t: Throwable) {
-            close(t)
-        }
-    })
-}*/
+    override val favoriteRecipes: Flow<RecipesDTO?> = flow { }
 
     override val allIngredients: Flow<IngredientsDTO?> = apiFlowCall(mealApi.allIngredients) {
         trySend(it)
-    }//.shareIn(mainScope, SharingStarted.WhileSubscribed(), 1)
-
-
-    /*callbackFlow {
-    mealApi.allIngredients?.enqueue(object : Callback<IngredientsDTO?> {
-        override fun onResponse(
-            call: Call<IngredientsDTO?>,
-            response: Response<IngredientsDTO?>
-        ) {
-            if (!response.isSuccessful) {
-                close(Error("Call failed with code: ${response.code()} ${response.message()}"))
-                return
-            }
-            response.body()?.meals?.forEach {
-                val res = trySend(it)
-                if (!res.isSuccess) {
-                    close(res.exceptionOrNull())
-                    return
-                }
-            }
-            close()
-        }
-
-        override fun onFailure(call: Call<IngredientsDTO?>, t: Throwable) {
-            close(t)
-        }
-
-    })
-}*/
+    }
 
     /**
      * @param handleItem Callback that handles the retrieved response, run in some coroutine

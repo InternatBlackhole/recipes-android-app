@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import si.uni_lj.fri.pbd.miniapp3.R
-import si.uni_lj.fri.pbd.miniapp3.models.RecipeDetailsIM
 import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
 import si.uni_lj.fri.pbd.miniapp3.ui.favorites.FavoritesScreen
 import si.uni_lj.fri.pbd.miniapp3.ui.search.SearchScreen
@@ -67,7 +66,7 @@ fun MainScreen(
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            MainAppBar(pagerState = pagerState, scrollBehavior = scrollBehavior)
+            MainAppBar(scrollBehavior = scrollBehavior)
         }, snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
@@ -77,12 +76,7 @@ fun MainScreen(
             pagerState = pagerState,
             pages = pages,
             snackbarHostState = snackbarHostState,
-            onRecipeClick = {
-                onRecipeClick(it)
-                scope.launch {
-                    snackbarHostState.showSnackbar(it?.recipeName ?: "unknown")
-                }
-            }
+            onRecipeClick = onRecipeClick
         )
     }
 }
@@ -160,7 +154,6 @@ fun MainPager(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainAppBar(
-    pagerState: PagerState,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier
 ) {

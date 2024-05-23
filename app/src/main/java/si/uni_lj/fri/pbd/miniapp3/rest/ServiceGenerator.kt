@@ -1,19 +1,19 @@
 package si.uni_lj.fri.pbd.miniapp3.rest
 
 import android.util.Log
-import okhttp3.Interceptor
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import si.uni_lj.fri.pbd.miniapp3.Constants
 
 object ServiceGenerator {
     private var sBuilder: Retrofit.Builder =
         Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
-            GsonConverterFactory.create()
+            GsonConverterFactory.create(
+                GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+            )
         )
 
     private var sHttpClient: OkHttpClient.Builder =
