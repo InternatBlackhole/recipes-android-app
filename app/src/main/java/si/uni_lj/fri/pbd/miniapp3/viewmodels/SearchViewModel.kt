@@ -1,10 +1,7 @@
-package si.uni_lj.fri.pbd.miniapp3.ui.search
+package si.uni_lj.fri.pbd.miniapp3.viewmodels
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,14 +9,15 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import si.uni_lj.fri.pbd.miniapp3.models.RecipeRepository
+import si.uni_lj.fri.pbd.miniapp3.models.dto.IngredientDTO
 import si.uni_lj.fri.pbd.miniapp3.models.dto.IngredientsDTO
 import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipesDTO
 
 class SearchViewModel : ViewModel() {
     private val recipeRepository = RecipeRepository.instance
 
-    private val _state = mutableStateOf(SearchScreenState())
-    val ingredientsLoadingState: State<SearchScreenState> = _state
+//    private val _state = mutableStateOf(SearchScreenState())
+//    val ingredientsLoadingState: State<SearchScreenState> = _state
 
     private val _recipesState =
         MutableStateFlow<RecipesUiState>(RecipesUiState.Success(null))
@@ -36,6 +34,7 @@ class SearchViewModel : ViewModel() {
     fun pullIngredients() {
         viewModelScope.launch {
             //load all ingredients
+            _ingredientsState.value = IngredientsUiState.Loading
             recipeRepository.allIngredients
                 //.flowOn(Dispatchers.IO)
                 .map { IngredientsUiState.Success(it) as IngredientsUiState }
@@ -44,28 +43,32 @@ class SearchViewModel : ViewModel() {
                     Log.e(this@SearchViewModel.javaClass.simpleName, "See throwable", it)
                 }
                 .collect {
-                    _state.value = SearchScreenState(false)
+//                    _state.value = SearchScreenState(false)
                     _ingredientsState.value = it
                 }
         }
     }
 
-    fun findRecipesByIngredient(ingredient: String) {
+    fun findRecipesByIngredient(ingredient: IngredientDTO?) {
+        ingredient?.strIngredient ?: return
         viewModelScope.launch {
-            recipeRepository.getRecipesByIngredient(ingredient)
+            _recipesState.value = RecipesUiState.Loading
+            recipeRepository.getRecipesByIngredient(ingredient.strIngredient)
+                .map { RecipesUiState.Success(it) as RecipesUiState }
                 .catch {
-                    _recipesState.value = RecipesUiState.Error(it)
+                    emit(RecipesUiState.Error(it))
+                    Log.e(this@SearchViewModel.javaClass.simpleName, "See throwable", it)
                 }
                 .collect {
-                    _recipesState.value = RecipesUiState.Success(it)
+                    _recipesState.value = it
                 }
         }
     }
 }
 
-data class SearchScreenState(
+/*data class SearchScreenState(
     val isLoading: Boolean = true,
-)
+)*/
 
 sealed class RecipesUiState {
     data class Success(
@@ -75,6 +78,8 @@ sealed class RecipesUiState {
     data class Error(
         val exception: Throwable
     ) : RecipesUiState()
+
+    data object Loading : RecipesUiState()
 }
 
 sealed class IngredientsUiState {
@@ -85,6 +90,8 @@ sealed class IngredientsUiState {
     data class Error(
         val exception: Throwable
     ) : IngredientsUiState()
+
+    data object Loading : IngredientsUiState()
 }
 
 

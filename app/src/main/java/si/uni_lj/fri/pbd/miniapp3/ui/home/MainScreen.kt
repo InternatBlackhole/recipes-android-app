@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import si.uni_lj.fri.pbd.miniapp3.R
 import si.uni_lj.fri.pbd.miniapp3.models.RecipeDetailsIM
+import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
 import si.uni_lj.fri.pbd.miniapp3.ui.favorites.FavoritesScreen
 import si.uni_lj.fri.pbd.miniapp3.ui.search.SearchScreen
 import si.uni_lj.fri.pbd.miniapp3.ui.theme.MiniApp3Theme
@@ -48,11 +49,11 @@ enum class Pages(
 }
 
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
 )
 @Composable
 fun MainScreen(
-    onRecipeClick: (RecipeDetailsIM) -> Unit = {},
+    onRecipeClick: (RecipeDTO?) -> Unit = {},
     modifier: Modifier = Modifier,
     pages: Array<Pages> = Pages.entries.toTypedArray()
 ) {
@@ -62,7 +63,7 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -79,7 +80,7 @@ fun MainScreen(
             onRecipeClick = {
                 onRecipeClick(it)
                 scope.launch {
-                    snackbarHostState.showSnackbar(it.strMeal ?: "unknown")
+                    snackbarHostState.showSnackbar(it?.recipeName ?: "unknown")
                 }
             }
         )
@@ -100,7 +101,7 @@ fun MainPager(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     pages: Array<Pages>,
-    onRecipeClick: (RecipeDetailsIM) -> Unit = {},
+    onRecipeClick: (RecipeDTO?) -> Unit = {},
     snackbarHostState: SnackbarHostState
 ) {
     Column(modifier) {

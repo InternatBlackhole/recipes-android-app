@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class RecipeDTO {
-    @SerializedName("strName")
+    @SerializedName("strMeal")
     @Expose
     val recipeName: String? = null
 

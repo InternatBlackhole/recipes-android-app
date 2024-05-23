@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import si.uni_lj.fri.pbd.miniapp3.models.RecipeDetailsIM
+import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
 import si.uni_lj.fri.pbd.miniapp3.ui.MainScreenViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun FavoritesScreen(
-    mainScreenViewModel: MainScreenViewModel = viewModel(),
-    onRecipeClick: (RecipeDetailsIM) -> Unit,
+    onRecipeClick: (RecipeDTO?) -> Unit,
     snackHost: SnackbarHostState
 ) {
     Box(modifier = Modifier.fillMaxSize()) {

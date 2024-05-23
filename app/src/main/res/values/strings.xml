@@ -9,6 +9,9 @@
     <string name="favorites">Favorites</string>
     <string name="thumbnail">Thumbnail</string>
     <string name="loading_ingredients">Loading ingredients...</string>
-    <string name="choose_ingredient">"Choose ingredient: "</string>
+    <string name="choose_ingredient">"Choose ingredient"</string>
     <string name="error_occured">Error occured</string>
+    <string name="no_name_given">no name given</string>
+    <string name="there_are_no_recipes_for_chosen_ingredient">There are no recipes for chosen ingredient</string>
+    <string name="recipes_loading">Recipes loading...</string>
 </resources>
