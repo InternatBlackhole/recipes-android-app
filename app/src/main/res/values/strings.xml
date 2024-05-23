@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MiniApp3</string>
+
+    <string name="favorite">Favorite</string>
+    <string name="unfavorite">Unfavorite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="loading_ingredients">Loading ingredients...</string>
+    <string name="choose_ingredient">"Choose ingredient: "</string>
+    <string name="error_occured">Error occured</string>
+</resources>
