@@ -48,7 +48,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
-            delay(1000) //TODO: change to 2000
+            delay(2000)
             startActivity(Intent(applicationContext, MainActivity::class.java))
             finish()
         }

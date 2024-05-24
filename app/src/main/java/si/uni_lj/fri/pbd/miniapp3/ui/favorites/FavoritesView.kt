@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import si.uni_lj.fri.pbd.miniapp3.R
 import si.uni_lj.fri.pbd.miniapp3.compose.LoadingError
@@ -41,7 +43,7 @@ fun FavoritesScreen(
     val loadingState by favoritesViewModel.favoritesLoadingUiState.collectAsState()
     //val refresh by favoritesViewModel.favoritesRefresh.collectAsState(initial = true)
 
-    //if (refresh) favoritesViewModel.refreshFavorites()
+    //if (refresh) favoritesViewModel.loadFavorites()
 
     var isRefreshing by remember { mutableStateOf(loadingState is FavoritesLoadingUiState.Loading) }
 
@@ -80,9 +82,18 @@ fun FavoritesScreen(
                     onRecipeClick = onRecipeClick,
                     modifier = Modifier
                         .align(Alignment.TopCenter)
-                        .padding(top = 8.dp)
+                        .padding(top = 8.dp, bottom = 26.dp)
                 )
                 isRefreshing = false
+                Text(
+                    text = stringResource(R.string.pull_to_refresh),
+                    color = Color.Yellow,
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(4.dp)
+                )
             }
         }
         PullRefreshIndicator(
@@ -108,6 +119,6 @@ private fun FavoritesGrid(
             color = MaterialTheme.colorScheme.secondary
         )
     } else {
-        RecipeStaggeredGrid(items = state.items, onRecipeClick = onRecipeClick)
+        RecipeStaggeredGrid(items = state.items, onRecipeClick = onRecipeClick, modifier = modifier)
     }
 }

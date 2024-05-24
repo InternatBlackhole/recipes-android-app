@@ -29,4 +29,5 @@
     <string name="you_have_no_favorite_recipes">You have no favorite recipes!</string>
     <string name="couldn_t_favorite_recipe">Couldn\'t favorite recipe</string>
     <string name="recipe_favorited">Recipe favorited</string>
+    <string name="pull_to_refresh">Pull to refresh!</string>
 </resources>
