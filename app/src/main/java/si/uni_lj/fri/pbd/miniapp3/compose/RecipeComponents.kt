@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
@@ -37,8 +38,10 @@ fun RecipeCard(name: String, thumbnail: String?, modifier: Modifier = Modifier) 
             contentDescription = stringResource(R.string.thumbnail) + " $name",
             loading = placeholder(R.drawable.meal_placeholder),
             failure = placeholder(R.drawable.error_icon),
+            transition = CrossFade
             //modifier = Modifier.padding(2.dp)
         )
+        //Glide.with(LocalContext.current).load(thumbnail).in
         Text(
             text = name,
             modifier = Modifier
