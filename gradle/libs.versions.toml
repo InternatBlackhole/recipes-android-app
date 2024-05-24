@@ -1,11 +1,13 @@
 [versions]
 agp = "8.3.0"
+compiler = "1.1.1"
 compose = "1.0.0-beta01"
 coreSplashscreen = "1.0.1"
 debugDb = "v1.0.6"
+debugDbVersion = "1.0.6"
 glide = "4.14.2"
 gson = "2.10.1"
-kotlin = "1.9.0"
+kotlin = "2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -30,6 +32,7 @@ navigationCompose = "2.7.7"
 runtimeLivedata = "1.6.7"
 
 [libraries]
+android-debug-db = { module = "com.amitshekhar.android:debug-db", version.ref = "debugDbVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleViewmodelCompose" }
@@ -41,6 +44,7 @@ androidx-material = { module = "androidx.compose.material:material", version.ref
 androidx-material3-v130beta01 = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomCompilerVersion" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompilerVersion" }
+compiler = { module = "android.arch.persistence.room:compiler", version.ref = "compiler" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 debug-db = { module = "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db", version.ref = "debugDb" }
@@ -72,4 +76,5 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

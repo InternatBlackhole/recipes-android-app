@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -9,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "si.uni_lj.fri.pbd.miniapp3"
-        minSdk = 26
+        minSdk = 33
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -40,6 +42,8 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
+
 }
 
 dependencies {
@@ -47,9 +51,11 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
-    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.androidx.room.ktx)//KTX Extensions/Coroutines for Room
-    annotationProcessor(libs.room.compiler)
+    //annotationProcessor(libs.compiler)
+
+    //debugImplementation(libs.android.debug.db)
 
     implementation(libs.gson)
     implementation(libs.retrofit)
@@ -88,7 +94,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.logging.interceptor)
 
-    //implementation(libs.androidx.material)
+    implementation(libs.androidx.material)
     implementation(libs.glide)
     implementation(libs.glide.compose)
     implementation(libs.androidx.material3.v130beta01)

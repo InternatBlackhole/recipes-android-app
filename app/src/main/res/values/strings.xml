@@ -14,4 +14,19 @@
     <string name="no_name_given">no name given</string>
     <string name="there_are_no_recipes_for_chosen_ingredient">There are no recipes for chosen ingredient</string>
     <string name="recipes_loading">Recipes loading...</string>
+    <string name="recipe_loading">Recipe loading...</string>
+    <string name="couldn_t_load_recipe">Couldn\'t load recipe!</string>
+    <string name="this_recipe_doesn_t_exist">This recipe doesn\'t exist</string>
+    <string name="recipe_favorite">"Recipe favorite: "</string>
+    <string name="area">"Area: "</string>
+    <string name="favorite_button">Favorite button</string>
+    <string name="ingredients_list">Ingredients list</string>
+    <string name="measurements_list">Measurements list</string>
+    <string name="instructions">Instructions</string>
+    <string name="no_instructions_for_this_recipe_were_given">No instructions for this recipe were given</string>
+    <string name="your_favorite_recipes_are_loading">Your favorite recipes are loading...</string>
+    <string name="failed_to_load_your_favorite_recipes">Failed to load your favorite recipes</string>
+    <string name="you_have_no_favorite_recipes">You have no favorite recipes!</string>
+    <string name="couldn_t_favorite_recipe">Couldn\'t favorite recipe</string>
+    <string name="recipe_favorited">Recipe favorited</string>
 </resources>

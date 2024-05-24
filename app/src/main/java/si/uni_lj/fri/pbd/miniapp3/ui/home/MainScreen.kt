@@ -21,9 +21,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import si.uni_lj.fri.pbd.miniapp3.R
+import si.uni_lj.fri.pbd.miniapp3.compose.MainAppBar
 import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
 import si.uni_lj.fri.pbd.miniapp3.ui.favorites.FavoritesScreen
 import si.uni_lj.fri.pbd.miniapp3.ui.search.SearchScreen
@@ -149,25 +148,4 @@ fun MainPager(
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
-@Composable
-fun MainAppBar(
-    scrollBehavior: TopAppBarScrollBehavior,
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        modifier = Modifier
-            //.wrapContentHeight()
-            .fillMaxWidth(),
-        title = {
-            Text(stringResource(id = R.string.app_name))
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary
-        ),
-        scrollBehavior = scrollBehavior
-    )
 }

@@ -16,9 +16,6 @@ import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipesDTO
 class SearchViewModel : ViewModel() {
     private val recipeRepository = RecipeRepository.instance
 
-//    private val _state = mutableStateOf(SearchScreenState())
-//    val ingredientsLoadingState: State<SearchScreenState> = _state
-
     private val _recipesState =
         MutableStateFlow<RecipesUiState>(RecipesUiState.Success(null))
     val recipesState = _recipesState.asStateFlow()
@@ -40,7 +37,7 @@ class SearchViewModel : ViewModel() {
                 .map { IngredientsUiState.Success(it) as IngredientsUiState }
                 .catch {
                     emit(IngredientsUiState.Error(it))
-                    Log.e(this@SearchViewModel.javaClass.simpleName, "See throwable", it)
+                    Log.e(SearchViewModel::class.simpleName, "PullIngredients", it)
                 }
                 .collect {
 //                    _state.value = SearchScreenState(false)
@@ -57,7 +54,7 @@ class SearchViewModel : ViewModel() {
                 .map { RecipesUiState.Success(it) as RecipesUiState }
                 .catch {
                     emit(RecipesUiState.Error(it))
-                    Log.e(this@SearchViewModel.javaClass.simpleName, "See throwable", it)
+                    Log.e(SearchViewModel::class.simpleName, "findRecipesByIngredient", it)
                 }
                 .collect {
                     _recipesState.value = it

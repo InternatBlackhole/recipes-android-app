@@ -5,31 +5,37 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import si.uni_lj.fri.pbd.miniapp3.Constants
 import si.uni_lj.fri.pbd.miniapp3.database.dao.RecipeDao
-import si.uni_lj.fri.pbd.miniapp3.database.entity.RecipeDetails
-import java.util.concurrent.Executors
+import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
 
-@androidx.room.Database(entities = [RecipeDetails::class], version = 1, exportSchema = false)
+@androidx.room.Database(entities = [RecipeDTO::class], version = 2, exportSchema = false)
 abstract class Database : RoomDatabase() {
-
-    // TODO: add a DAO reference
+    abstract fun recipeDao(): RecipeDao
 
     companion object {
         @Volatile
-        private var INSTANCE: Database? = null
+        private lateinit var INSTANCE: Database
 
+        val instance: Database
+            get() {
+                if (!::INSTANCE.isInitialized) {
+                    throw Error("Ah you see, this thing has to be initialized in Application")
+                }
+                return INSTANCE
+            }
 
-        fun getDatabase(context: Context): Database? {
-            if (INSTANCE == null) {
+        fun init(context: Context) {
+            if (!::INSTANCE.isInitialized) {
                 synchronized(Database::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            Database::class.java, Constants.DB_NAME)
+                    if (!::INSTANCE.isInitialized) {
+                        INSTANCE = Room.databaseBuilder(
+                            context,
+                            Database::class.java, Constants.DB_NAME
+                        )
                             .fallbackToDestructiveMigration()
                             .build()
                     }
                 }
             }
-            return INSTANCE
         }
     }
 }

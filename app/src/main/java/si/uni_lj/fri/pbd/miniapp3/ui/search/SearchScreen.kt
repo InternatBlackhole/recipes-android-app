@@ -1,8 +1,5 @@
 package si.uni_lj.fri.pbd.miniapp3.ui.search
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,12 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -29,32 +24,29 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
 import si.uni_lj.fri.pbd.miniapp3.R
+import si.uni_lj.fri.pbd.miniapp3.compose.LoadingError
+import si.uni_lj.fri.pbd.miniapp3.compose.RecipeStaggeredGrid
+import si.uni_lj.fri.pbd.miniapp3.compose.StillLoading
 import si.uni_lj.fri.pbd.miniapp3.models.dto.IngredientDTO
 import si.uni_lj.fri.pbd.miniapp3.models.dto.RecipeDTO
-import si.uni_lj.fri.pbd.miniapp3.ui.theme.MiniApp3Theme
 import si.uni_lj.fri.pbd.miniapp3.viewmodels.IngredientsUiState
 import si.uni_lj.fri.pbd.miniapp3.viewmodels.RecipesUiState
 import si.uni_lj.fri.pbd.miniapp3.viewmodels.SearchViewModel
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
@@ -66,31 +58,47 @@ fun SearchScreen(
 //    val loadingState by searchViewModel.ingredientsLoadingState
     val ingredients by searchViewModel.ingredientsState.collectAsState()
     val recipesState by searchViewModel.recipesState.collectAsState()
+    var isRefreshing by remember { mutableStateOf(ingredients is IngredientsUiState.Loading) }
+    var lastRefresh by remember { mutableLongStateOf(System.currentTimeMillis()) }
+
+    val pullRefreshState = rememberPullRefreshState(
+        isRefreshing,
+        onRefresh = {
+            if (System.currentTimeMillis() - lastRefresh >= 5000) {
+                lastRefresh = System.currentTimeMillis()
+                isRefreshing = true
+                searchViewModel.pullIngredients()
+            }
+        })
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(4.dp),
-        //.pullRefresh(pullRefreshState)
+            .padding(4.dp)
+            .pullRefresh(pullRefreshState),
     ) {
-//        if (loadingState.isLoading) {
-//            StillLoading(
-//                modifier = Modifier.align(Alignment.Center),
-//                text = stringResource(R.string.loading_ingredients)
-//            )
-//        } else {
         when (ingredients) {
             is IngredientsUiState.Success -> {
+//                if (isRefreshing)
+//                    StillLoading(
+//                        modifier = Modifier.align(Alignment.Center),
+//                        text = stringResource(R.string.loading_ingredients)
+//                    )
+//                else {
                 IngredientsLoaded(
                     onIngredientSelected = searchViewModel::findRecipesByIngredient,
                     ingredients = ingredients as IngredientsUiState.Success,
                     recipes = recipesState,
                     onRecipeClick = onRecipeClick
                 )
+                isRefreshing = false
+//                }
+
             }
 
             is IngredientsUiState.Error -> {
                 LoadingError(text = "ingredients", modifier = Modifier.align(Alignment.Center))
+                isRefreshing = false
             }
 
             is IngredientsUiState.Loading -> {
@@ -100,26 +108,11 @@ fun SearchScreen(
                 )
             }
         }
-//        }
-    }
-}
-
-@Composable
-private fun LoadingError(modifier: Modifier = Modifier, text: String) {
-    Column(
-        modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.error_icon),
-            contentDescription = stringResource(R.string.error_occured)
-        )
-        Text(
-            text = "There was an error loading $text!",
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
         )
     }
 }
@@ -143,18 +136,6 @@ fun SearchScreen(
         snackHost = snackHost
     )
 }*/
-
-@Composable
-private fun StillLoading(modifier: Modifier = Modifier, text: String) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        CircularProgressIndicator(modifier = Modifier.padding(vertical = 4.dp))
-        Text(text = text)
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -216,7 +197,7 @@ private fun IngredientsLoaded(
                 if (recipes.recipes?.recipes == null || recipes.recipes.recipes.isEmpty()) {
                     Text(
                         text = stringResource(R.string.there_are_no_recipes_for_chosen_ingredient),
-                        color = Color.LightGray,
+                        color = MaterialTheme.colorScheme.secondary,
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp,
                         modifier = Modifier
@@ -226,21 +207,11 @@ private fun IngredientsLoaded(
                     return@run
                 }
 
-                LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalItemSpacing = 8.dp
-                ) {
-                    items(recipes.recipes.recipes, { item -> item.recipeId ?: "" }) {
-                        RecipeCard(
-                            name = it.recipeName ?: stringResource(R.string.no_name_given),
-                            thumbnail = it.recipeThumbnail,
-                            modifier = Modifier.clickable {
-                                onRecipeClick(it)
-                            }
-                        )
-                    }
-                }
+                RecipeStaggeredGrid(
+                    items = recipes.recipes.recipes,
+                    key = { item -> item.recipeId ?: "" },
+                    onRecipeClick = onRecipeClick
+                )
             }
 
             is RecipesUiState.Error -> {
@@ -254,42 +225,6 @@ private fun IngredientsLoaded(
                 )
             }
         }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-private fun RecipeCard(name: String, thumbnail: String?, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-    ) {
-        GlideImage(
-            model = thumbnail,
-            contentDescription = stringResource(R.string.thumbnail) + " $name",
-            loading = placeholder(R.drawable.meal_placeholder),
-            failure = placeholder(R.drawable.error_icon),
-            //modifier = Modifier.padding(2.dp)
-        )
-        Text(
-            text = name,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(4.dp),
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
-    }
-}
-
-@Composable
-@Preview
-fun RecipeCardPreview() {
-    MiniApp3Theme {
-        RecipeCard(
-            "Ratata  aajhakjab ajkshja posdfja kajsgd sajdhajshdas ",
-            "https://www.themealdb.com/images/media/meals/kos9av1699014767.jpg"
-        )
     }
 }
 
