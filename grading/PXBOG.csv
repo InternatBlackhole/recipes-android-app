@@ -30,5 +30,5 @@ No.,QUESTION,ANSWER,WEIGHT,COMMENT (if grading 0 points)
 25,"Does the application implement background querying for the Database? [NOTE: check the Database class and see whether “allowMainThreadQueries” is present - if not, and the FavoritesFragment works as expected, then the application uses background processing]",1,1,
 /,BONUS TASK,,,
 26,Inspect the code and check whether ALL UI elements are implemented using Jetpack Compose?,0,5,Does not use Jetpack Compose
-General comments,[…],,,
+General comments,[...],,,
 ,Total score,0,,
