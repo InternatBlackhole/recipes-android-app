@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "si.uni_lj.fri.pbd.miniapp3"
+    namespace = "si.timkr.mealdb"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "si.uni_lj.fri.pbd.miniapp3"
+        applicationId = "si.timkr.mealdb"
         minSdk = 33
         targetSdk = 34
         versionCode = 1

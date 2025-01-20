@@ -1,29 +1,8 @@
-# README #
+# The Meal DB Android App #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This app is a mobile version of [the meal db website](https://www.themealdb.com/) using their API.
+It supports searching for meals by the ingredients they require and saving recipes for offline
+usage.
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+The app is built wit Jetpack Compose, uses the Retrofit2 library for API requests,
+and the Room library for local database management.

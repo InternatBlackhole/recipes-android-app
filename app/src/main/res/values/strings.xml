@@ -1,20 +1,18 @@
 <resources>
-    <string name="app_name">MiniApp3</string>
+    <string name="app_name">Meal Database</string>
 
     <string name="favorite">Favorite</string>
     <string name="unfavorite">Unfavorite</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="thumbnail">Thumbnail</string>
-    <string name="loading_ingredients">Loading ingredients...</string>
+    <string name="loading_ingredients">Loading ingredients…</string>
     <string name="choose_ingredient">"Choose ingredient"</string>
-    <string name="error_occured">Error occured</string>
+    <string name="error_occurred">Error occurred</string>
     <string name="no_name_given">no name given</string>
     <string name="there_are_no_recipes_for_chosen_ingredient">There are no recipes for chosen ingredient</string>
-    <string name="recipes_loading">Recipes loading...</string>
-    <string name="recipe_loading">Recipe loading...</string>
+    <string name="recipes_loading">Recipes loading…</string>
+    <string name="recipe_loading">Recipe loading…</string>
     <string name="couldn_t_load_recipe">Couldn\'t load recipe!</string>
     <string name="this_recipe_doesn_t_exist">This recipe doesn\'t exist</string>
     <string name="recipe_favorite">"Recipe favorite: "</string>
@@ -24,7 +22,7 @@
     <string name="measurements_list">Measurements list</string>
     <string name="instructions">Instructions</string>
     <string name="no_instructions_for_this_recipe_were_given">No instructions for this recipe were given</string>
-    <string name="your_favorite_recipes_are_loading">Your favorite recipes are loading...</string>
+    <string name="your_favorite_recipes_are_loading">Your favorite recipes are loading…</string>
     <string name="failed_to_load_your_favorite_recipes">Failed to load your favorite recipes</string>
     <string name="you_have_no_favorite_recipes">You have no favorite recipes!</string>
     <string name="couldn_t_favorite_recipe">Couldn\'t favorite recipe</string>
